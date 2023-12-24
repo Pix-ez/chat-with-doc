@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;             /* Remove default body margin */
+  overflow: hidden;
+  background-color: black;     /* Hide vertical scrollbar */
+}
+
+/* Add the following styles to your CSS file or style tag */
+
+.flex-container {
+  /* Set the div styles */
+  overflow-y: auto;
+  max-height: 45rem;
+  height: fit-content;
+
+  /* Define the styles for the custom scrollbar */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #333 #222; /* Firefox */
+
+  /* Webkit browsers (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #333; /* Thumb color */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #222; /* Track color */
+  }
+}
