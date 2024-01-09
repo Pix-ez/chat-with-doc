@@ -13,11 +13,11 @@ from langchain.document_loaders import PyPDFLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 
-import time
-import pandas as pd
+
+
 from tqdm.auto import tqdm
 import uuid
-import os
+
 
 
 import chromadb
@@ -30,8 +30,15 @@ app = Flask(__name__)
 
 CORS(app)  # Enable CORS for the entire app
 
+# DOCKER_API = '30.40.57.173'
 
-chroma_client = chromadb.HttpClient(host='localhost', port=6969)
+DOCKER_API = 'localhost'
+
+DOCKER_PORT = 6969
+
+
+
+chroma_client = chromadb.HttpClient(host=DOCKER_API, port=DOCKER_PORT)
 
 
  
@@ -87,7 +94,7 @@ def generated_embedding():
         index = collection
 
         # Embed and upload text chunks to Pinecone
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001" , google_api_key="API_KEY")
+        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001" , google_api_key="AIzaSyCcMn4ApSKqhBGpo0YV9BrSK3aSyL78fWo")
         
         embeddings= []
         documents =[]
@@ -146,7 +153,7 @@ def fetch_query():
             return jsonify({'error': 'Query not provided'}), 400
 
         # Initialize the embedding model
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key="API_KEY")
+        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key="AIzaSyCcMn4ApSKqhBGpo0YV9BrSK3aSyL78fWo")
 
         # Embed the query using ChromaDB
         embeds = embedding_model.embed_query([query])
@@ -174,4 +181,4 @@ def fetch_query():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5002 )

@@ -20,7 +20,12 @@ function App() {
   // Access your API key (see "Set up your API key" above)
 const genAI = new GoogleGenerativeAI("API_KEY");
 
+// const NODE_SERVER_API = 'http://30.40.57.173:3001'
 
+// const FLASK_SERVER_API = 'http://30.40.57.173:5002'
+
+const NODE_SERVER_API = 'http://localhost:3001'
+const FLASK_SERVER_API = 'http://localhost:5002'
 
   
 
@@ -55,7 +60,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
   const Signup = async () => {
     if (usercred) {
       try {
-        const response = await axios.post("http://localhost:3001/api/login", usercred, {
+        const response = await axios.post(`${NODE_SERVER_API}/api/login`, usercred, {
           headers: { 'Content-Type': 'application/json' },
         });
 
@@ -75,7 +80,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
 
     if (loggedin) {
       try {
-        const response = await axios.post("http://localhost:3001/api/new-chat", { email: usercred.email, name: chatname }, {
+        const response = await axios.post(`${NODE_SERVER_API}/api/new-chat`, { email: usercred.email, name: chatname }, {
           headers: { 'Content-Type': 'application/json' },
         });
 
@@ -94,7 +99,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
 
   const getChat = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/api/get-chat", usercred, {
+      const response = await axios.post(`${NODE_SERVER_API}/api/get-chat`, usercred, {
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -147,7 +152,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
     if (activeChatIndex !== undefined && chatlist[activeChatIndex]) {
       const chatId = chatlist[activeChatIndex].chat_id;
 
-      axios.get(`http://localhost:3001/api/get-chatdata/${chatId}`)
+      axios.get(`${NODE_SERVER_API}/api/get-chatdata/${chatId}`)
         .then(response => {
           const chatData = response.data;
           setChats(chatData.chats);
@@ -181,13 +186,13 @@ const genAI = new GoogleGenerativeAI("API_KEY");
 
 
       // Make API call to update user's query in the backend
-      const userQueryResponse = await axios.post('http://localhost:3001/api/update-chat', {
+      const userQueryResponse = await axios.post(`${NODE_SERVER_API}/api/update-chat`, {
         chat_id: chatlist[activeChatIndex].chat_id,
         newChat: userQuery,
       });
 
       //api to flask server to document search
-      const query_search = await axios.post('http://127.0.0.1:5002/api/fetch-query',
+      const query_search = await axios.post(`${FLASK_SERVER_API}/api/fetch-query`,
                                              {index_name:chatlist[activeChatIndex].doc_index,
                                               query:userQuery.content})
 
@@ -250,7 +255,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
 
 
       // Make API call to update AI's response in the backend
-      const aiResponseUpdate = await axios.post('http://localhost:3001/api/update-chat', {
+      const aiResponseUpdate = await axios.post(`${NODE_SERVER_API}/api/update-chat`, {
         chat_id: chatlist[activeChatIndex].chat_id,
         newChat: aiResponse,
       });
@@ -303,7 +308,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
       formData.append('project_id', currentProjectId);
   
       // Send a request to the Node.js server for file upload
-      const response = await axios.post('http://localhost:3001/api/upload-file', formData, {
+      const response = await axios.post(`${NODE_SERVER_API}/api/upload-file`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
   
@@ -315,7 +320,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
         setEmbeddingStatus('generating');
   
         // Send an API call to the Flask Python server with the obtained URL
-        const flaskResponse = await axios.post('http://127.0.0.1:5002/api/generated-embedding', {
+        const flaskResponse = await axios.post(`${FLASK_SERVER_API}/api/generated-embedding`, {
           url: response.data.url, // Assuming the key is 'url'
           // Add any other necessary data to be sent to the Flask server
         });
@@ -328,7 +333,7 @@ const genAI = new GoogleGenerativeAI("API_KEY");
           const doc_index = flaskResponse.data.doc_index;
           if (doc_index) {
             // Send a request to the Node.js server to update the project database
-            const nodeServerResponse = await axios.post('http://localhost:3001/api/update-project', {
+            const nodeServerResponse = await axios.post(`${NODE_SERVER_API}/api/update-project`, {
               project_id: currentProjectId,
               doc_index: doc_index,
             });

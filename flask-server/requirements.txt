@@ -1,0 +1,9 @@
+langchain
+langchain-google-genai
+pypdf
+tqdm
+uuid
+flask
+flask_cors
+chromadb
+
