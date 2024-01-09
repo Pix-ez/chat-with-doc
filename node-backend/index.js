@@ -1,5 +1,4 @@
-// MONGODB_URL="mongodb+srv://rahul:rahul123@yt.lpbshqm.mongodb.net/?retryWrites=true&w=majority"
-// JWT_SECRET = 8hEnPGeoBqGUT6zksxt4G95gW+uMdzwe7EVaRnp0xRI=
+
 
 import express from "express";
 import dotenv from "dotenv";
