@@ -153,7 +153,7 @@ def fetch_query():
             return jsonify({'error': 'Query not provided'}), 400
 
         # Initialize the embedding model
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key="AIzaSyCcMn4ApSKqhBGpo0YV9BrSK3aSyL78fWo")
+        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key="API_KEY")
 
         # Embed the query using ChromaDB
         embeds = embedding_model.embed_query([query])
