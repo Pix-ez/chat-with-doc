@@ -94,7 +94,7 @@ def generated_embedding():
         index = collection
 
         # Embed and upload text chunks to Pinecone
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001" , google_api_key="AIzaSyCcMn4ApSKqhBGpo0YV9BrSK3aSyL78fWo")
+        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001" , google_api_key="API_KEY")
         
         embeddings= []
         documents =[]
